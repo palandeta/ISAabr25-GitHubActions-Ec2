@@ -1,0 +1,23 @@
+name: GitHub Actions desplegando en EC2
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Despliegue en EC2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revisar los archivos
+        uses: actions/checkout@v2
+      - name: Despliegue al servidor
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
+  
